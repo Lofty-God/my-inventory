@@ -23,7 +23,7 @@ job:
       run: |
         go fmt ./...
         go vet ./...
-    - name: run tests
+    - name: run test
       run: go test
 
   
