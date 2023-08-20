@@ -10,6 +10,7 @@ jobs:
     steps:
     - name: Set up MySQL
       run: |
+        sudo /etc/init.d/mysql start
         sudo mysql -e 'ALTER USER "${{env.Db_USER}}"@"localhost" IDENTIFIED BY "${{env.DB_PASSWORD}}";' -uroot -proot
         sudo mysql -e 'CREATE DATABASE ${{env.DB_DATABASE}};' -u${{env.Db_USER}} -p${{env.DB_PASSWORD}}
     - name: Checkout Repo Code
