@@ -24,6 +24,6 @@ jobs:
         go fmt ./...
         go vet ./...
     - name: run tests
-      run: go Assessment
+      run: go test
 
   
