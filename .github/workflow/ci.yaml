@@ -11,7 +11,7 @@ job:
     - name: set up MySQL
       run: |
         sudo /etc/init.d/mysql start
-        sudo mysql -e 'ALTER USER "${{Db_USER}}"@"localhost" IDENTIFY BY "${{DB_PASSWORD}}";' -uroot -proot
+        sudo mysql -e 'ALTER USER "${{Db_USER}}"@"localhost" IDENTIFIED BY "${{DB_PASSWORD}}";' -uroot -proot
         sudo mysql -e 'CREATE DATABASE ${{DB_DATABASE}};' -u${{Db_USER}} -p${{DB_PASSWORD}}
     - name: checkout repo code
       uses: Actions/checkout@v2
