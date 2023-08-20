@@ -3,7 +3,7 @@ on: push
 env: 
   DB_NAME: test
   Db_USER: root
-  DB_PASSWORD: Oraplus@95
+  DB_PASSWORD: Oraplus@123
 jobs: 
  run_code_checks:
     runs-on: ubuntu-latest
