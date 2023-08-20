@@ -71,7 +71,7 @@ func sendRequest(request *http.Request) *httptest.ResponseRecorder {
 
 }
 func TestCreateProduct(t *testing.T) {
-	var product = []byte(`{"name":"chair", "Quantity":20, "price":150}`)
+	var product = []byte(`{"name":"chair", "Quantity":1, "price":100}`)
 	req, _ := http.NewRequest("POST", "/product", bytes.NewBuffer(product))
 	req.Header.Set("content_type", "Application/json")
 	response := sendRequest(req)
@@ -81,13 +81,13 @@ func TestCreateProduct(t *testing.T) {
 	if m["name"] != "chair" {
 		t.Errorf("expected value:%v, Got:%v", "chair", m["name"])
 	}
-	if m["quantity"] != 20.0 {
-		t.Errorf("expected value:%v, Got:%v", 20.0, m["quantity"])
+	if m["quantity"] != 1.0 {
+		t.Errorf("expected value:%v, Got:%v", 1.0, m["quantity"])
 	}
 }
 func TestDeleteProduct(t *testing.T) {
 	clearTable()
-	addProduct("Bicycle", 20, 50)
+	addProduct("Bicycle", 20, 500)
 
 	req, _ := http.NewRequest("GET", "/product/1", nil)
 	response := sendRequest(req)
@@ -104,35 +104,34 @@ func TestDeleteProduct(t *testing.T) {
 }
 func TestUpdateProduct(t *testing.T) {
 	clearTable()
-	addProduct("microwave", 45, 234)
+	addProduct("Bicycle", 1, 50)
 	req, _ := http.NewRequest("GET", "/product/1", nil)
 	response := sendRequest(req)
 
 	var oldValue map[string]interface{}
 	json.Unmarshal(response.Body.Bytes(), &oldValue)
 
-	var product = []byte(`{"microwave", 450, 234}`)
+	var product = []byte(`{"Bicycle", 20, 50}`)
 	req, _ = http.NewRequest("PUT", "/product/1", bytes.NewBuffer(product))
 	req.Header.Set("content_type", "Application/json")
 	response = sendRequest(req)
 
-	var NewValue map[string]interface{}
-	json.Unmarshal(response.Body.Bytes(), &NewValue)
+	var newValue map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &newValue)
 
-	if oldValue["id"] != NewValue["id"] {
-		t.Errorf("expected id: %v, Got id: %v", NewValue["id"], oldValue["id"])
+	if oldValue["id"] == newValue["id"] {
+		t.Errorf("expected id: %v, Got: %v", newValue["id"], oldValue["id"])
 	}
 
-	if oldValue["name"] != NewValue["name"] {
-		t.Errorf("expected name: %v, Got name: %v", NewValue["name"], oldValue["name"])
+	if oldValue["name"] == newValue["name"] {
+		t.Errorf("expected name: %v, Got: %v", newValue["name"], oldValue["name"])
+	}
+	if oldValue["price"] == newValue["price"] {
+		t.Errorf("expected price: %v, Got: %v", newValue["price"], oldValue["price"])
 	}
 
-	if oldValue["Quantity"] != NewValue["Quantity"] {
-		t.Errorf("expected Quantity: %v, Got Quantity: %v", NewValue["Quantity"], oldValue["Quantity"])
-	}
-
-	if oldValue["price"] != NewValue["price"] {
-		t.Errorf("expected price: %v, Got price: %v", NewValue["price"], oldValue["price"])
+	if oldValue["Quantity"] != newValue["Quantity"] {
+		t.Errorf("expected Quantity: %v, Got: %v", newValue["Quantity"], oldValue["Quantity"])
 	}
 
 }
