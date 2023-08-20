@@ -1,4 +1,4 @@
-name: Continous Integration
+
 on: push
 env: 
   DB_NAME: test
