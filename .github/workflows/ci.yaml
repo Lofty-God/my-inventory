@@ -1,18 +1,17 @@
 name: Continous Integration
 on: push
 env: 
-  DB_NAME: Assessment
+  DB_NAME: test1
   Db_USER: root
   DB_PASSWORD: Oraplus@123
 jobs: 
  run_code_checks:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up MySQL
+    - name: Create test1 database
       run: |
-        sudo /etc/init.d/mysql start
         sudo mysql -e 'ALTER USER "${{env.Db_USER}}"@"localhost" IDENTIFIED BY "${{env.DB_PASSWORD}}";' -uroot -proot
-        sudo mysql -e 'CREATE DATABASE ${{env.DB_DATABASE}};' -u${{env.Db_USER}} -p${{env.DB_PASSWORD}}
+        sudo mysql -u${{env.Db_USER}}  -p${{env.DB_PASSWORD}} < databases/tracker/create_databases.sql
     - name: Checkout Repo Code
       uses: actions/checkout@v2
     - name: Set Up Go
@@ -24,6 +23,6 @@ jobs:
         go fmt ./...
         go vet ./...
     - name: run tests
-      run: go Assessment
+      run: go test1
 
   
