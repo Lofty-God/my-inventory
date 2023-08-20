@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 )
 
@@ -58,13 +57,10 @@ func (p *product) createProduct(db *sql.DB) error {
 }
 func (p *product) updateproduct(db *sql.DB) error {
 	query := fmt.Sprintf("update Products set name='%v', Quantity=%v, price=%v where id=%v", p.Name, p.Quantity, p.Price, p.Id)
-	result, err := db.Exec(query)
-	rowsAffected, err := result.RowsAffected()
-	if rowsAffected == 0 {
-		return errors.New("no such rows exit")
-	}
+	_, err := db.Exec(query)
 	return err
 }
+
 func (p *product) deleteProduct(db *sql.DB) error {
 	query := fmt.Sprintf("delete from Products where id=%v", p.Id)
 	_, err := db.Exec(query)
